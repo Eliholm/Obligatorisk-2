@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Test Suite</title>
+<link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.17.2.css">
+
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+    <script src="https://code.jquery.com/qunit/qunit-2.17.2.js"></script>
+    <script src="clickergame.js"></script>
+</body>
+
+
+<script>
+
+    function updateView() { }
+
+
+    QUnit.module('doClick', function () {
+        QUnit.test('doClick', function (assert) {
+            model.points = 0;
+            model.pointsPerClick = 1;
+            model.smileyIndex = 1;
+            doClick();
+            assert.equal(model.points, 1, 'Etter ett trykk har du ett poeng');
+            model.pointsPerClick = 5;
+            doClick();
+            assert.equal(model.points, 6, 'Legger til 5 poeng per klikk')
+            assert.equal(model.smileyIndex, 3, 'Smileyindex er 3')
+            doClick();
+            doClick();
+            assert.equal(model.smileyIndex, 1, 'Smileyindex er 1')
+        });
+    });
+
+    QUnit.module('buyUpgrade', function () {
+        QUnit.test('buyUpgrade', function (assert) {
+            model.points = 10;
+            model.pointsPerClick = 1;
+            buyUpgrade(7);
+            assert.equal(model.points, 3, 'Sjekker at buyupgrade virker')
+            assert.equal(model.pointsPerClick, 2, 'Sjekker at pointsperclick dobles')
+            buyUpgrade(7);
+            assert.equal(model.points, 3, 'Sjekker at kjøp ikke gjennomføres')
+            assert.equal(model.pointsPerClick, 2, 'Sjekker at kjøp ikke gjennomføres')
+        });
+    });
+
+    QUnit.module('buyUpgrade1', function () {
+        QUnit.test('buyUpgrade1', function (assert) {
+            model.points = 10;
+            model.pointsPerClick = 1;
+            buyUpgrade1(7);
+            assert.equal(model.points, 3, 'Sjekker at buyupgrade1 virker')
+            assert.equal(model.pointsPerClick, 6, 'Sjekker at pointsperclick legger på fem poeng')
+            buyUpgrade1(7);
+            assert.equal(model.points, 3, 'Sjekker at kjøp ikke gjennomføres')
+            assert.equal(model.pointsPerClick, 6, 'Sjekker at kjøp ikke gjennomføres')
+        });
+    });
+
+    QUnit.module('random', function () {
+        QUnit.test('random', function (assert) {
+            model.points = 10;
+            model.pointsPerClick = 1;
+            random(7);
+            assert.equal(model.points, 3, 'Sjekker at kjøp gjennomføres')
+            assert.ok(model.pointsPerClick>1, 'Pointsperclick økte til tilfeldig mengde')
+        });
+    });
+
+    QUnit.module('reset', function () {
+        QUnit.test('reset', function (assert) {
+            model.points = 10;
+            model.pointsPerClick = 7;
+            reset();
+            assert.equal(model.points, 0, 'Sjekker at reset virker på poeng')
+            assert.equal(model.pointsPerClick, 1, 'Sjekker at reset virker på poengperklikk') 
+        });
+    });
+
+    QUnit.module('submitScore', function () {
+        QUnit.test('submitScore', function (assert) {
+                model.name = 'Elisabeth';
+                model.points = 10;
+                model.pointsPerClick = 2;
+                model.leaderboard = [];
+            submitScore();
+            assert.equal(model.leaderboard[0].name, 'Elisabeth')
+            assert.equal(model.leaderboard[0].points, 10)
+            assert.equal(model.leaderboard[0].pointsPerClick, 2)
+          
+        
+        });
+    }); 
+
+    QUnit.module('doubleOrNothing', function () {
+        QUnit.test('doubleOrNoting', function (assert) {
+            model.points = 10;
+            model.pointsPerClick = 1;
+            let oldPoints = model.points;
+            doubleOrNothing();
+            assert.ok((model.points == oldPoints * 2) || (model.points == 0), 'sjekker om den dobler eller fjerner poeng')
+            model.points = 10;
+            model.pointsPerClick = 1;
+            oldPoints = model.points;
+            doubleOrNothing();
+            assert.ok((model.points == oldPoints * 2) || (model.points == 0), 'sjekker om den dobler eller fjerner poeng')
+            model.points = 10;
+            model.pointsPerClick = 1;
+            oldPoints = model.points;
+            doubleOrNothing();
+            assert.ok((model.points == oldPoints * 2) || (model.points == 0), 'sjekker om den dobler eller fjerner poeng')
+        });
+    });
+
+    QUnit.module('getSmiley', function () {
+        QUnit.test('getSmiley', function (assert) {
+        assert.equal(getSmiley(0), '🦄')   
+        assert.equal(getSmiley(1), '🌈')
+        assert.equal(getSmiley(2), '🍭')
+        assert.equal(getSmiley(3), '🎀')
+        assert.equal(getSmiley(4), '')          
+        });
+    }); 
+
+    QUnit.module('getNextSmileyIndex', function () {
+        QUnit.test('getNextSmileyIndex', function (assert) {
+        assert.equal(getNextSmileyIndex(0), 1)
+        assert.equal(getNextSmileyIndex(1), 2) 
+        assert.equal(getNextSmileyIndex(2), 3)  
+        assert.equal(getNextSmileyIndex(3), 0)
+        });
+    }); 
+
+
+</script>

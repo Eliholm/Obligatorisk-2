@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app"/>
+        
+
+    <script src="clickergame.js"></script>
+    <script>
+        // model
+        
+        model.points = 0;
+        model.pointsPerClick = 1;
+        model.smileyIndex = 0;
+        model.leaderboard = [];
+        model.name = '';
+        model.leaderboardOutput = '';
+
+
+
+        // view
+        updateView();
+
+        function updateView() {
+            createOutput();
+            var smiley = getSmiley(model.smileyIndex);
+            document.getElementById('app').innerHTML = `
+                <br>
+                <br>
+                <div id="image" onclick="doClick()">${smiley}</div>
+                <div id="pointsInfo">${model.points}</div>
+                <br>
+                <div id="pointsperclick">Antall poeng per klikk:</div>
+                <div id="pts">${model.pointsPerClick}</div>
+                <br>
+                <button onclick="buyUpgrade(10)" class="button"><span>Kjøp +1 poeng per klikk (10 poeng)</span></button>
+                <button onclick="buyUpgrade1(50)" class="button"><span>Kjøp +5 poeng per klikk (50 poeng)</span></button>
+                <br>
+                <button onclick="random(100)" class="button"><span>Kjøp tilfeldig 1-30 poeng per klikk (100 poeng)</span></button>
+                <button onclick="doubleOrNothing()" class="button"><span>Kvitt eller dobbelt</span></button>
+                <br>
+                <button onclick="reset()" class="button"><span>Start på nytt</span></button>
+                <br>
+                <br>
+                <br>
+                <input type="text" oninput="model.name=value" value="${model.name}" placeholder="Navn" style="background-color: palegoldenrod"></input>
+                <button class="sButton" onclick="submitScore()">Lagre poengsum</button>
+                <table>
+                    <tr>
+                        <th>Navn</th>
+                        <th>Poeng</th>
+                        <th>Antall poeng per klikk</th>
+                    </tr>
+                    ${model.leaderboardOutput}
+                </table>
+
+        
+                
+            `;
+        }
+
+
+    </script>
+</body>
+
+</html>
